@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+  font-family: var(--font-sans);
+  background: var(--color-background-tertiary);
+  padding: 2rem 1rem;
+}
+.container { max-width: 700px; margin: 0 auto; }
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.header h1 {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+}
+.header p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+.input-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.input-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.input-group input {
+  flex: 1;
+  font-size: 15px;
+}
+.input-group button {
+  min-width: 120px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.examples {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+.examples strong {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+.loading {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  text-align: center;
+}
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border-tertiary);
+  border-top-color: var(--color-text-info);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.loading p {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+.results {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 1.25rem;
+}
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 1rem;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  margin-bottom: 1rem;
+}
+.result-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.result-icon.safe {
+  background: var(--color-background-success);
+  color: var(--color-text-success);
+}
+.result-icon.warning {
+  background: var(--color-background-warning);
+  color: var(--color-text-warning);
+}
+.result-icon.danger {
+  background: var(--color-background-danger);
+  color: var(--color-text-danger);
+}
+.result-info h2 {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+.result-info p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+.metric-card {
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+  padding: 1rem;
+}
+.metric-card label {
+  display: block;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+}
+.metric-card .value {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+.metric-card .subvalue {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+.details-section {
+  margin-bottom: 1.5rem;
+}
+.details-section h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 12px;
+}
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+  font-size: 14px;
+}
+.detail-item:last-child {
+  border-bottom: none;
+}
+.detail-item .label {
+  color: var(--color-text-secondary);
+}
+.detail-item .value {
+  color: var(--color-text-primary);
+  font-weight: 500;
+  text-align: right;
+  max-width: 60%;
+}
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: var(--border-radius-md);
+  font-size: 12px;
+  font-weight: 500;
+}
+.badge.success {
+  background: var(--color-background-success);
+  color: var(--color-text-success);
+}
+.badge.warning {
+  background: var(--color-background-warning);
+  color: var(--color-text-warning);
+}
+.badge.danger {
+  background: var(--color-background-danger);
+  color: var(--color-text-danger);
+}
+.badge.info {
+  background: var(--color-background-info);
+  color: var(--color-text-info);
+}
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--border-radius-md);
+  font-size: 14px;
+  line-height: 1.6;
+  margin-top: 1rem;
+}
+.alert.success {
+  background: var(--color-background-success);
+  color: var(--color-text-success);
+  border: 0.5px solid var(--color-border-success);
+}
+.alert.warning {
+  background: var(--color-background-warning);
+  color: var(--color-text-warning);
+  border: 0.5px solid var(--color-border-warning);
+}
+.alert.danger {
+  background: var(--color-background-danger);
+  color: var(--color-text-danger);
+  border: 0.5px solid var(--color-border-danger);
+}
+.error {
+  background: var(--color-background-danger);
+  border: 0.5px solid var(--color-border-danger);
+  border-radius: var(--border-radius-lg);
+  padding: 1.25rem;
+  color: var(--color-text-danger);
+}
+.error h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.error p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.check-again {
+  margin-top: 16px;
+  width: 100%;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Domain trust checker</h1>
+    <p>Check karo kisi bhi website ki authenticity aur safety before ordering</p>
+  </div>
+
+  <div class="input-card">
+    <div class="input-group">
+      <input 
+        type="text" 
+        id="urlInput" 
+        placeholder="Enter website URL (e.g., amazon.in, flipkart.com)"
+        autocomplete="off"
+      />
+      <button id="checkBtn">Check domain</button>
+    </div>
+    <div class="examples">
+      <strong>Examples:</strong> amazon.in, flipkart.com, myntra.com, juaa.co.in
+    </div>
+  </div>
+
+  <div id="resultContainer"></div>
+</div>
+
+<script>
+const urlInput = document.getElementById('urlInput');
+const checkBtn = document.getElementById('checkBtn');
+const resultContainer = document.getElementById('resultContainer');
+
+function cleanURL(url) {
+  url = url.trim().toLowerCase();
+  url = url.replace(/^(https?:\/\/)?(www\.)?/, '');
+  url = url.split('/')[0];
+  url = url.split('?')[0];
+  return url;
+}
+
+function showLoading() {
+  resultContainer.innerHTML = `
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <p>Checking domain authenticity...</p>
+    </div>
+  `;
+}
+
+function showError(message) {
+  resultContainer.innerHTML = `
+    <div class="error">
+      <h3>Error checking domain</h3>
+      <p>${message}</p>
+      <button class="check-again" onclick="resultContainer.innerHTML = ''">Try again</button>
+    </div>
+  `;
+}
+
+async function checkDomain() {
+  const rawURL = urlInput.value;
+  if (!rawURL) {
+    showError('Please enter a website URL');
+    return;
+  }
+
+  const domain = cleanURL(rawURL);
+  if (!domain || !domain.includes('.')) {
+    showError('Please enter a valid domain name');
+    return;
+  }
+
+  showLoading();
+  checkBtn.disabled = true;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        tools: [{
+          type: "web_search_20250305",
+          name: "web_search"
+        }],
+        messages: [{
+          role: "user",
+          content: `Search for comprehensive information about the domain "${domain}" and provide a detailed trust assessment. Search for: domain age/registration date, SSL certificate status, company information, customer reviews/complaints, any fraud reports or scam warnings, business legitimacy.
+
+Return ONLY a JSON object (no preamble, no markdown backticks) with this exact structure:
+{
+  "domain": "${domain}",
+  "trustScore": <number 0-100>,
+  "status": "<safe|warning|danger>",
+  "domainAge": "<age in years or 'Unknown'>",
+  "registrationDate": "<date or 'Unknown'>",
+  "sslStatus": "<Valid|Invalid|Unknown>",
+  "companyName": "<name or 'Unknown'>",
+  "reviewScore": "<rating or 'Unknown'>",
+  "totalReviews": "<count or 'Unknown'>",
+  "redFlags": ["<flag1>", "<flag2>"],
+  "positives": ["<positive1>", "<positive2>"],
+  "recommendation": "<brief verdict in Hinglish>"
+}`
+        }]
+      })
+    });
+
+    const data = await response.json();
+    
+    let resultText = '';
+    for (const item of data.content) {
+      if (item.type === 'text') {
+        resultText += item.text;
+      }
+    }
+
+    resultText = resultText.replace(/```json|```/g, '').trim();
+    
+    const result = JSON.parse(resultText);
+    displayResults(result);
+
+  } catch (error) {
+    console.error('Error:', error);
+    showError('Unable to check domain. Please try again or check your internet connection.');
+  } finally {
+    checkBtn.disabled = false;
+  }
+}
+
+function displayResults(data) {
+  const statusConfig = {
+    safe: { icon: '✓', class: 'safe', message: 'This domain appears trustworthy' },
+    warning: { icon: '!', class: 'warning', message: 'Exercise caution with this domain' },
+    danger: { icon: '✕', class: 'danger', message: 'High risk - avoid this domain' }
+  };
+
+  const config = statusConfig[data.status] || statusConfig.warning;
+  
+  const trustColor = data.trustScore >= 70 ? 'success' : 
+                     data.trustScore >= 40 ? 'warning' : 'danger';
+
+  let redFlagsHTML = '';
+  if (data.redFlags && data.redFlags.length > 0) {
+    redFlagsHTML = `
+      <div class="alert danger">
+        <strong>Red flags:</strong><br>
+        ${data.redFlags.map(flag => `• ${flag}`).join('<br>')}
+      </div>
+    `;
+  }
+
+  let positivesHTML = '';
+  if (data.positives && data.positives.length > 0) {
+    positivesHTML = `
+      <div class="alert success">
+        <strong>Positive indicators:</strong><br>
+        ${data.positives.map(pos => `• ${pos}`).join('<br>')}
+      </div>
+    `;
+  }
+
+  resultContainer.innerHTML = `
+    <div class="results">
+      <div class="result-header">
+        <div class="result-icon ${config.class}">${config.icon}</div>
+        <div class="result-info">
+          <h2>${data.domain}</h2>
+          <p>${config.message}</p>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <label>Trust score</label>
+          <div class="value">${data.trustScore}</div>
+          <div class="subvalue"><span class="badge ${trustColor}">
+            ${data.trustScore >= 70 ? 'Good' : data.trustScore >= 40 ? 'Fair' : 'Poor'}
+          </span></div>
+        </div>
+        <div class="metric-card">
+          <label>Domain age</label>
+          <div class="value">${data.domainAge}</div>
+          <div class="subvalue">${data.registrationDate !== 'Unknown' ? 'Since ' + data.registrationDate : ''}</div>
+        </div>
+        <div class="metric-card">
+          <label>SSL certificate</label>
+          <div class="value">${data.sslStatus}</div>
+          <div class="subvalue"><span class="badge ${data.sslStatus === 'Valid' ? 'success' : 'warning'}">
+            ${data.sslStatus === 'Valid' ? 'Secure' : 'Check needed'}
+          </span></div>
+        </div>
+        <div class="metric-card">
+          <label>Customer reviews</label>
+          <div class="value">${data.reviewScore}</div>
+          <div class="subvalue">${data.totalReviews !== 'Unknown' ? data.totalReviews + ' reviews' : ''}</div>
+        </div>
+      </div>
+
+      <div class="details-section">
+        <h3>Domain details</h3>
+        <div class="detail-item">
+          <span class="label">Company name</span>
+          <span class="value">${data.companyName}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Registration date</span>
+          <span class="value">${data.registrationDate}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Security status</span>
+          <span class="value">${data.sslStatus}</span>
+        </div>
+      </div>
+
+      ${positivesHTML}
+      ${redFlagsHTML}
+
+      <div class="alert info">
+        <strong>Recommendation:</strong> ${data.recommendation}
+      </div>
+
+      <button class="check-again" onclick="resultContainer.innerHTML = ''; urlInput.value = ''; urlInput.focus();">
+        Check another domain
+      </button>
+    </div>
+  `;
+}
+
+checkBtn.addEventListener('click', checkDomain);
+urlInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') checkDomain();
+});
+</script>
+</body>
+</html>
